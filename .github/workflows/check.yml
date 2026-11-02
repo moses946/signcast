@@ -1,0 +1,25 @@
+name: Verify SignCast
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - run: npm run package:extension
+      - run: npm run scan:secrets
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signcast-extension
+          path: artifacts/signcast-extension.zip

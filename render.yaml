@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: signcast
+    runtime: node
+    plan: starter
+    numInstances: 1
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeployTrigger: 'off'
+    envVars:
+      - key: NODE_VERSION
+        value: '24'
+      - key: NODE_ENV
+        value: production
+      - key: MOCK_PROVIDERS
+        value: 'false'
+      - key: AWS_REGION
+        value: eu-west-1
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: OVERLAY_TOKEN_SECRET
+        generateValue: true
+      - key: VIEWER_SESSION_SECRET
+        generateValue: true
+      - key: SIGNVRSE_API_BASE_URL
+        sync: false
+      - key: SIGNVRSE_API_KEY
+        sync: false
+      - key: TWITCH_CLIENT_ID
+        sync: false
+      - key: TWITCH_CLIENT_SECRET
+        sync: false
+      - key: TWITCH_REDIRECT_URI
+        sync: false
+      - key: TWITCH_EXTENSION_CLIENT_ID
+        sync: false
+      - key: TWITCH_EXTENSION_SECRET
+        sync: false
+      - key: TWITCH_EXTENSION_ALLOWED_ORIGINS
+        sync: false
+      - key: VITE_API_BASE_URL
+        sync: false
+# Before deploying, configure independent server-side AWS credentials and refresh.
+# Local login profiles are not present on Render. Prefer AWS role-based compute for
+# unattended hosting; do not deploy an unusable credential-less live service.

@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+node_modules
+**/node_modules
+**/dist
+artifacts
+test-results
+playwright-report
+credentials
+*.pem
+*.key
