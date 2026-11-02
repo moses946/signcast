@@ -38,7 +38,7 @@ The deterministic IAM generator did not recognize Transcribe Streaming. Its inco
 - Supplied Signvrse origin returned 503 from authenticated `/v1/me`. Smoke render was not attempted because preflight failed. ASL quality, real render timing, and actual live signing playback remain unverified.
 - User-created Twitch OAuth and Extension credentials are not configured yet. Native Twitch Hosted Test, two actual Twitch accounts, CSP/CORS, component sizing, latency calibration, and public approval are not verified by standalone browser tests.
 - Actual OBS Browser Source playback and ASL-fluent review remain pending.
-- The owner selected AWS hosting using their credits. ECS Express Mode/CodeBuild hosting is in progress; see docs/AWS_HOSTING.md and ignored artifacts/aws-hosting.json. Task roles and Secrets Manager replace local credential profiles in production. Render is an optional template.
+- The owner selected AWS hosting using their credits. ECS Express Mode hosting is deployed in labeled demo mode at https://si-eb3f0fb6d3914816a6229496e4cfa0e2.ecs.eu-west-1.on.aws. The image was built from commit 4b68ec1. HTTPS health, shared playback, and personal replay passed a real hosted browser smoke test. ECS rollout completed with one task. See docs/AWS_HOSTING.md and ignored artifacts/aws-hosting.json. Task roles and Secrets Manager replace local credential profiles in production. Render is an optional template.
 - Long-session/capacity/live performance targets are not established by synthetic tests.
 
 ## Resume checklist

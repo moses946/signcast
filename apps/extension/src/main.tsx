@@ -23,7 +23,12 @@ declare global {
     };
   }
 }
-const apiBase = (import.meta.env.VITE_API_BASE_URL || location.origin).replace(/\/$/, '');
+// Synthetic previews stay on their own server; real Twitch authorization always
+// goes to the configured backend origin, never a query-supplied destination.
+const demoPreview = new URLSearchParams(location.search).get('demo') === '1';
+const apiBase = (
+  demoPreview ? location.origin : import.meta.env.VITE_API_BASE_URL || location.origin
+).replace(/\/$/, '');
 function App() {
   const [access, setAccess] = useState<{ apiBase: string; token: string } | null>(null),
     [error, setError] = useState(''),

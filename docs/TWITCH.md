@@ -1,5 +1,13 @@
 # Native Twitch Component Extension
 
+## Current backend
+
+Origin: https://si-eb3f0fb6d3914816a6229496e4cfa0e2.ecs.eu-west-1.on.aws
+
+Hosted OAuth callback: https://si-eb3f0fb6d3914816a6229496e4cfa0e2.ecs.eu-west-1.on.aws/auth/twitch/callback
+
+The currently deployed application is explicitly synthetic demo mode. Configure the independent Twitch registrations and pass real signing gates before switching live.
+
 ## Two separate registrations
 
 1. **OAuth application** for broadcaster identity. Register exact local and deployed callback URLs ending `/auth/twitch/callback`. Set its client ID/secret on the server. No chat scopes are requested.

@@ -10,6 +10,10 @@ Date: 2 November 2026. Never treat fixture checks as proof of live ASL or native
 - Dependency update removed Google packages and reported zero npm vulnerabilities.
 - Isolated Git repository initialized. Heuristic source/build/history secret scan passes; ignored `.env` contains only owner-supplied local settings and is not tracked.
 
+## Hosted evidence
+
+ECS Express Mode is serving the labeled demo over HTTPS. The deployed image built from 4b68ec1 passed ECR basic scanning with no reported findings. Real hosted browser smoke tests passed health, demo authorization, shared clip playback, and independent personal replay. One task remains after a completed rollout. This is standalone hosted-fixture evidence, not native Twitch or ASL validation.
+
 ## Live findings
 
 - Custom-domain unauthenticated health returned HTTP 525.
@@ -26,7 +30,7 @@ Date: 2 November 2026. Never treat fixture checks as proof of live ASL or native
 - User-created Twitch OAuth app and Extension credentials configured.
 - Actual Twitch Local/Hosted Test: Helper JWT, CSP/CORS, component dimensions, mute/autoplay, MSE/complete-MP4 fallback, two allowed viewer accounts, timing, hidden/paused lifecycle, refreshed authorization.
 - Actual OBS Browser Source playback of live ASL.
-- Hosted deployment and production AWS credential strategy.
+- Native/live provider verification in the hosted task; HTTPS demo hosting and workload-role strategy are implemented.
 
 ## Performance targets, not achieved claims
 

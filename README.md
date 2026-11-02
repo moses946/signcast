@@ -4,6 +4,8 @@ Native desktop Twitch Component Extension for AI-generated ASL signing, English 
 
 **Prototype:** ASL accuracy, native Twitch Hosted Test, OBS playback, and live latency require verification. Synthetic demo media is a test pattern, not sign language.
 
+Hosted demo: [Open SignCast](https://si-eb3f0fb6d3914816a6229496e4cfa0e2.ecs.eu-west-1.on.aws) · [Public repository](https://github.com/moses946/signcast). The hosted demo uses synthetic media and is not proof of live ASL.
+
 ## Latest decisions
 
 - Speech recognition is **Amazon Transcribe Streaming**, replacing the original Google plan at the owner’s request.

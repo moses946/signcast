@@ -1,5 +1,7 @@
 # Deployment
 
+The owner selected AWS ECS Express Mode as the primary host. See [AWS hosting](AWS_HOSTING.md). The following generic/Render notes are an optional alternative.
+
 The application builds as one Node 24 service. Its companion/static assets and HTTP/WebSocket backend use one origin. The extension is packaged independently and hosted by Twitch.
 
 ```text

@@ -11,6 +11,7 @@ The owner selected AWS hosting as well as Amazon Transcribe. Render remains an o
 - A separate execution role pulls images, writes logs, and injects the single project Secrets Manager secret.
 - No root credentials, local AWS profiles, `.env`, or developer passwords enter the image.
 - Minimum/maximum task count is one; session/media state is in memory.
+- Express Mode enforces a managed canary strategy and may temporarily run old/new tasks during updates. AWS rejects changing these services to ROLLING. Stop capture before any deployment, keep deployment manual, and wait for one completed task/deployment before opening a demo session. Zero-downtime stateful updates are not supported.
 - Initial hosting is visibly **demo mode**. Live mode waits for the independent Twitch and Signvrse gates.
 
 `scripts/deploy-aws.ps1` records metadata in ignored `artifacts/aws-hosting.json`. It refuses an unrelated existing named role. Bootstrap reads only the app credential allowlist from `.env` into ignored private input. Build workers cannot read the runtime secret.
