@@ -69,7 +69,7 @@ The two-viewer browser tests use fixtures. Read [validation](docs/VALIDATION.md)
 
 ## Hosting and operating limits
 
-See [deployment](docs/DEPLOYMENT.md). The server is stateful and runs as one instance. Restart clears OAuth sessions, captures, captions, and clips; the broadcaster reconnects. Each capture is capped at one hour and 300 render requests. The queue retains at most three unstarted phrases, with explicit overload pausing. Media retention is bounded at 128 MiB, ten completed clips, and two minutes. Up to 25 feed viewers are admitted; verify capacity before claiming production scale.
+See [AWS hosting](docs/AWS_HOSTING.md) for the selected deployment and [deployment](docs/DEPLOYMENT.md) for general requirements. The server is stateful and runs as one instance. Restart clears OAuth sessions, captures, captions, and clips; the broadcaster reconnects. Each capture is capped at one hour and 300 render requests. The queue retains at most three unstarted phrases, with explicit overload pausing. Media retention is bounded at 128 MiB, ten completed clips, and two minutes. Up to 25 feed viewers are admitted; verify capacity before claiming production scale.
 
 SignCast keeps no audio recordings. It retains transient PCM only for streaming backpressure, and short-lived captions/video for display/replay. Audio is transmitted to AWS; phrase text is sent to Signvrse. Their processing, logging, and retention policies are separate. Stop clears application session buffers. Do not use the prototype as a substitute for a qualified interpreter where accuracy is critical.
 

@@ -42,17 +42,15 @@ it('HTTP compatibility preserves idempotency and explicitly requests ASL', async
 });
 it('rejects untrusted async job origins before forwarding the key', async () => {
   vi.useFakeTimers();
-  const fetcher = vi
-    .fn()
-    .mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          statusUrl: 'https://attacker.invalid/status',
-          videoUrl: 'https://attacker.invalid/video',
-        }),
-        { status: 202, headers: { 'Content-Type': 'application/json' } },
-      ),
-    );
+  const fetcher = vi.fn().mockResolvedValue(
+    new Response(
+      JSON.stringify({
+        statusUrl: 'https://attacker.invalid/status',
+        videoUrl: 'https://attacker.invalid/video',
+      }),
+      { status: 202, headers: { 'Content-Type': 'application/json' } },
+    ),
+  );
   vi.stubGlobal('fetch', fetcher);
   const result = new SignvrseRenderer(config()).render(
     clip(),

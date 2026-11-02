@@ -178,7 +178,7 @@ function Dashboard() {
       </header>
       {demo && (
         <div className="demo-banner">
-          DEMO DATA · synthetic media and transcripts · no live ASL, Google, or Signvrse requests
+          DEMO DATA · synthetic media and transcripts · no live ASL, AWS, or Signvrse requests
         </div>
       )}
       <main>

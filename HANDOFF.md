@@ -18,15 +18,15 @@ Actual data path: microphone PCM -> server -> Amazon Transcribe Streaming -> fin
 
 Created `SignCastTranscribeRuntime` with only `transcribe:StartStreamTranscription`, region-restricted to `eu-west-1`; IAM Access Analyzer reported no findings. Root cannot assume roles, so a dedicated `SignCastDeveloper` IAM user was created with local-development sign-in, own password-change, and permission to assume only that runtime role. No permanent access keys were created.
 
-Short-lived CLI login profile: `signcast-developer`. Application role profile: `signcast-runtime`. Root provisioning profile is not used by the application. IAM login was completed successfully. Local account/resource details and one-time password are under ignored `artifacts/`; do not publish them. Production must use an independently scoped workload identity or an explicit credential-refresh strategy. Local AWS login caches cannot be copied to Render.
+Short-lived CLI login profile: `signcast-developer`. Application role profile: `signcast-runtime`. Root provisioning profile is not used by the application. IAM login and restricted runtime role assumption completed successfully. A real Amazon Transcribe stream returned three final and seven interim segments from generated speech. Local account/resource details and one-time password are under ignored `artifacts/`; do not publish them. Production must use an independently scoped workload identity or an explicit credential-refresh strategy. Local AWS login caches cannot be copied to Render.
 
 The deterministic IAM generator did not recognize Transcribe Streaming. Its incomplete STS-only output was not deployed. The effective policy follows the official AWS HTTP/2 streaming permission and was separately validated.
 
 ## Verified locally
 
 - Typecheck and production build pass.
-- 22 unit/integration tests pass.
-- Three Chromium tests pass: independent multi-viewer replay/hide, basic keyboard/input scope, synthetic AudioWorklet capture/cleanup.
+- 27 unit/integration tests pass on Node 24.
+- Four Chromium tests pass on Node 24 (including complete-file fallback): independent multi-viewer replay/hide, basic keyboard/input scope, synthetic AudioWorklet capture/cleanup.
 - Local extension HTTPS server starts at `https://localhost:5174/`.
 - Extension ZIP generation succeeds with root viewer/config/live entrypoints.
 - Render template passes the current public JSON schema.
@@ -38,7 +38,7 @@ The deterministic IAM generator did not recognize Transcribe Streaming. Its inco
 - Supplied Signvrse origin returned 503 from authenticated `/v1/me`. Smoke render was not attempted because preflight failed. ASL quality, real render timing, and actual live signing playback remain unverified.
 - User-created Twitch OAuth and Extension credentials are not configured yet. Native Twitch Hosted Test, two actual Twitch accounts, CSP/CORS, component sizing, latency calibration, and public approval are not verified by standalone browser tests.
 - Actual OBS Browser Source playback and ASL-fluent review remain pending.
-- No paid hosted service was created. Render configuration is prepared, but production AWS identity and intended hosting/billing account must be resolved before deployment.
+- The owner selected AWS hosting using their credits. ECS Express Mode/CodeBuild hosting is in progress; see docs/AWS_HOSTING.md and ignored artifacts/aws-hosting.json. Task roles and Secrets Manager replace local credential profiles in production. Render is an optional template.
 - Long-session/capacity/live performance targets are not established by synthetic tests.
 
 ## Resume checklist

@@ -6,7 +6,7 @@ This is the agent-transfer specification. **Latest owner steering overrides the 
 
 Build a public-source native desktop Twitch Component Extension that gives viewers ASL signing and English speech captions. A Twitch-authenticated companion captures the broadcaster’s microphone. Each viewer controls visibility, timing, replay, and return-to-live independently. OBS is a fallback using the same feed. Native review/test restrictions must be disclosed.
 
-Stack: Node 24, TypeScript, Express/ws, React/Vite, npm workspaces. One server instance/active broadcaster, in-memory sessions/media, no database/Redis/workers. Twitch hosts extension assets; the app hosts companion and backend. ASL first, English en-US speech, Zane avatar, 960×540 upper-body/30 fps, muted video. No runtime LLM, client glossing, Chrome extension, chat replay/EventSub, guest audio, VODs, mobile, or private rendering packages.
+Stack: Node 24, TypeScript, Express/ws, React/Vite, npm workspaces. One server instance/active broadcaster, in-memory sessions/media, no database/Redis/workers. Twitch hosts extension assets; AWS ECS Express Mode hosts companion/backend, using CodeBuild/ECR images, a scoped task role, and Secrets Manager. This later owner choice supersedes Render as the primary host. ASL first, English en-US speech, Zane avatar, 960×540 upper-body/30 fps, muted video. No runtime LLM, client glossing, Chrome extension, chat replay/EventSub, guest audio, VODs, mobile, or private rendering packages.
 
 ## Independent dependency gates
 
