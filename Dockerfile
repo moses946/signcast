@@ -9,7 +9,7 @@ RUN npm ci
 COPY . .
 RUN npm run typecheck && npm run build && npm prune --omit=dev
 
-FROM public.ecr.aws/docker/library/node:24-bookworm-slim
+FROM public.ecr.aws/docker/library/node:24-alpine
 ENV NODE_ENV=production PORT=3000
 WORKDIR /app
 COPY --from=build --chown=node:node /app/node_modules ./node_modules
