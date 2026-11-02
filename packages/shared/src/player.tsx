@@ -425,7 +425,9 @@ export function SignPlayer({
   }
   const demo = forceDemo || snapshot?.session.demo || activeClip?.demo;
   const caption =
-    activeClip?.text ||
+    (snapshot?.session.signingPaused && !replaying
+      ? snapshot?.transcripts.at(-1)?.text
+      : activeClip?.text) ||
     snapshot?.transcripts.at(-1)?.text ||
     'Signing and captions will appear here.';
   return (
@@ -494,7 +496,9 @@ export function SignPlayer({
         <p className="fine-print">Complete-video playback adds delay.</p>
       )}
       {snapshot?.session.signingPaused && (
-        <p className="error">Signing paused. Your streamer can resume it; captions continue.</p>
+        <p className="error" role="status">
+          Signing unavailable or paused. Live captions continue.
+        </p>
       )}
       {!overlay && (
         <div className="viewer-controls">

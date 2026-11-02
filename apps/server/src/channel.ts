@@ -91,6 +91,20 @@ export class Channel extends EventEmitter {
   }
   resume() {
     this.session.state = 'running';
+    if (!this.session.signingPaused) this.session.error = undefined;
+    this.status();
+  }
+  pauseSigning() {
+    this.session.signingPaused = true;
+    this.session.providers.signvrse = 'error';
+    this.queue = [];
+    this.assembler.clear();
+    this.error(
+      'signing_unavailable',
+      'Signing is unavailable. Live captions continue. Retry signing when Signvrse is available.',
+    );
+  }
+  resumeSigning() {
     this.session.signingPaused = false;
     this.session.error = undefined;
     this.drops = [];

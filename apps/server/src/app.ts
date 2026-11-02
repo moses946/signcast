@@ -14,6 +14,7 @@ import { feedAuthSchema } from '@signcast/shared/validation';
 import { Auth, safeEqual, type Owner } from './auth.js';
 import type { Config } from './config.js';
 import { Channel } from './channel.js';
+import { policyPage } from './policies.js';
 import { DemoRenderer, SignvrseRenderer, type SignRenderer } from './providers/signvrse.js';
 import {
   DemoSpeechStream,
@@ -136,6 +137,8 @@ export function createApplication(
   }
   const cookie = { httpOnly: true, secure: config.production, sameSite: 'lax' as const, path: '/' };
   app.get('/healthz', (_req, res) => res.json({ ok: true, mode: config.mock ? 'demo' : 'live' }));
+  app.get('/privacy', (_req, res) => res.type('html').send(policyPage('privacy')));
+  app.get('/terms', (_req, res) => res.type('html').send(policyPage('terms')));
   app.get('/auth/twitch', (_req, res) => {
     if (!config.twitchClientId)
       return void fail(
@@ -237,26 +240,49 @@ export function createApplication(
     starting = true;
     try {
       if (!config.mock) {
-        if (!config.signvrseKey) throw new Error('Signvrse key missing');
         await speechPreflight();
       }
-      await channel.preflight();
+      let signingAvailable = true;
+      try {
+        await channel.preflight();
+      } catch {
+        signingAvailable = false;
+      }
       active = channel;
       channel.start();
+      if (!signingAvailable) channel.pauseSigning();
       res.json({ snapshot: channel.snapshot() });
     } catch {
       channel.error(
         'preflight_failed',
-        'Check the supplied Signvrse key and your independent AWS signcast profile, then check provider availability.',
+        'Speech recognition could not start. Check the independent AWS credentials and service availability.',
       );
       fail(
         res,
         503,
         'preflight_failed',
-        'Provider preflight failed; no interpretation was started.',
+        'Speech preflight failed; microphone capture was not started.',
       );
     } finally {
       starting = false;
+    }
+  });
+  app.post('/api/session/signing/resume', owner, mutation, async (_req, res) => {
+    const channel = getChannel(res.locals.owner);
+    if (channel !== active || channel.session.state !== 'running')
+      return void fail(res, 409, 'not_running', 'Start or resume microphone capture first.');
+    try {
+      await channel.preflight();
+      channel.resumeSigning();
+      res.json({ snapshot: channel.snapshot() });
+    } catch {
+      channel.pauseSigning();
+      fail(
+        res,
+        503,
+        'signing_unavailable',
+        'Signvrse is still unavailable. Live captions continue.',
+      );
     }
   });
   for (const action of ['pause', 'resume', 'stop'] as const)

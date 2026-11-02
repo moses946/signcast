@@ -332,12 +332,12 @@ function Dashboard() {
                     className="secondary"
                     onClick={() =>
                       void run(async () => {
-                        await action('/api/session/resume');
+                        await action('/api/session/signing/resume');
                         await refresh();
                       })
                     }
                   >
-                    Resume signing feed
+                    Retry signing feed
                   </button>
                 )}
                 {demo && (
@@ -496,6 +496,10 @@ function Dashboard() {
           <p>
             Prototype interpretation may be incomplete or inaccurate. No audio recording is stored
             by SignCast.
+          </p>
+          <p>
+            <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> ·{' '}
+            <a href="https://github.com/moses946/signcast/issues">Support</a>
           </p>
         </footer>
       </main>

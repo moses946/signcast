@@ -124,6 +124,46 @@ describe('authorization boundaries', () => {
   });
 });
 describe('shared media and replay', () => {
+  it('keeps captions running during a signing outage and requires a successful explicit retry', async () => {
+    let available = false,
+      renders = 0;
+    const s = make(true, {
+      async preflight() {
+        if (!available) throw new Error('provider_unavailable');
+      },
+      async render() {
+        renders++;
+      },
+    });
+    const { agent, csrf } = await login(s);
+    const mutate = (path: string) =>
+      agent.post(path).set('Origin', origin).set('X-CSRF-Token', csrf);
+    const started = await mutate('/api/session/start').expect(200);
+    expect(started.body.snapshot.session.state).toBe('running');
+    expect(started.body.snapshot.session.signingPaused).toBe(true);
+    const channel = [...s.channels.values()][0];
+    channel.transcript({
+      id: 'outage-caption',
+      text: 'These captions are available.',
+      final: true,
+      audioStartMs: Date.now() - 1000,
+      audioEndMs: Date.now(),
+      createdAt: Date.now(),
+    });
+    expect(channel.snapshot().transcripts.at(-1)?.text).toBe('These captions are available.');
+    expect(renders).toBe(0);
+    await mutate('/api/session/pause').expect(200);
+    await mutate('/api/session/resume').expect(200);
+    expect(channel.session.signingPaused).toBe(true);
+    await mutate('/api/session/signing/resume').expect(503);
+    expect(channel.session.signingPaused).toBe(true);
+    available = true;
+    await mutate('/api/session/signing/resume').expect(200);
+    expect(channel.session.signingPaused).toBe(false);
+    expect(channel.session.providers.signvrse).toBe('demo');
+    expect(channel.snapshot().transcripts).toHaveLength(1);
+    expect(renders).toBe(0);
+  });
   it('renders once and serves identical bytes to ten viewers without new renders', async () => {
     let calls = 0;
     const data = await readFile(resolve('fixtures/demo.mp4'));
