@@ -27,7 +27,7 @@ ECS Express Mode is serving the labeled demo over HTTPS. The deployed image buil
 - Ten representative ASL phrases reviewed by an ASL-fluent reviewer. Statements, negation, question, number, proper name, fingerspelling, and longer phrase included.
 - Longer and varied speech-accuracy checks; the short real generated-speech smoke test passed.
 - Twelve-minute live speech session and one-hour/300-render limits exercised with actual service conditions.
-- User-created Twitch OAuth app and Extension credentials configured.
+- Actual user sign-in and Twitch Helper playback with the now-configured OAuth app and Extension credentials.
 - Actual Twitch Local/Hosted Test: Helper JWT, CSP/CORS, component dimensions, mute/autoplay, MSE/complete-MP4 fallback, two allowed viewer accounts, timing, hidden/paused lifecycle, refreshed authorization.
 - Actual OBS Browser Source playback of live ASL.
 - Native/live provider verification in the hosted task; HTTPS demo hosting and workload-role strategy are implemented.
@@ -50,3 +50,7 @@ Warm short phrase: median final-text-to-first-frame at most five seconds; paced 
 10. You can replay the last phrase.
 
 Use the hosted API with explicit `signLanguage=asl`. API acceptance and recognizable fingerspelling are not enough to claim full ASL interpretation quality.
+
+## Live configuration update
+
+The AWS rollout to live provider mode completed with one task on 2 November 2026. Twitch accepted the OAuth credentials. Hosted checks passed live health, OAuth Client ID and callback matching, server-signed diagnostic extension JWT exchange, configured-origin CORS, and absent demo authentication. Actual Twitch login/Helper playback remains a separate gate. The subsequent Signvrse account preflight still returned HTTP 503, so interpretation is blocked. No paid render was attempted.

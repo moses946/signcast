@@ -36,9 +36,9 @@ The deterministic IAM generator did not recognize Transcribe Streaming. Its inco
 ## External gates and limitations
 
 - Supplied Signvrse origin returned 503 from authenticated `/v1/me`. Smoke render was not attempted because preflight failed. ASL quality, real render timing, and actual live signing playback remain unverified.
-- User-created Twitch OAuth and Extension credentials are not configured yet. Native Twitch Hosted Test, two actual Twitch accounts, CSP/CORS, component sizing, latency calibration, and public approval are not verified by standalone browser tests.
+- User-created Twitch OAuth and Extension credentials are now configured in AWS Secrets Manager. The live-mode rollout completed with one task. OAuth credentials were accepted by Twitch; hosted callback, extension signing-secret verification, allowed-origin CORS, and disabled demo authentication all passed. Native Twitch Hosted Test, two actual Twitch accounts, CSP/CORS, component sizing, latency calibration, and public approval are not verified by standalone browser tests.
 - Actual OBS Browser Source playback and ASL-fluent review remain pending.
-- The owner selected AWS hosting using their credits. ECS Express Mode hosting is deployed in labeled demo mode at https://si-eb3f0fb6d3914816a6229496e4cfa0e2.ecs.eu-west-1.on.aws. The image was built from commit 4b68ec1. HTTPS health, shared playback, and personal replay passed a real hosted browser smoke test. ECS rollout completed with one task. See docs/AWS_HOSTING.md and ignored artifacts/aws-hosting.json. Task roles and Secrets Manager replace local credential profiles in production. Render is an optional template.
+- The owner selected AWS hosting using their credits. ECS Express Mode hosting is now configured for live providers at https://si-eb3f0fb6d3914816a6229496e4cfa0e2.ecs.eu-west-1.on.aws. The image was built from commit 4b68ec1. HTTPS health, shared playback, and personal replay passed a real hosted browser smoke test. ECS rollout completed with one task. See docs/AWS_HOSTING.md and ignored artifacts/aws-hosting.json. Task roles and Secrets Manager replace local credential profiles in production. Render is an optional template.
 - Long-session/capacity/live performance targets are not established by synthetic tests.
 
 ## Resume checklist
@@ -46,7 +46,11 @@ The deterministic IAM generator did not recognize Transcribe Streaming. Its inco
 1. Read `IMPLEMENTATION_PLAN.md` and this latest steering before using the older Google plan.
 2. Inspect ignored `artifacts/speech-check.json` and `provider-check.json` for the latest live outcomes; never print secrets.
 3. Restore Signvrse account reachability, then run `npm run check:providers -- --render` once and inspect real output with explicit ASL.
-4. Configure independent Twitch credentials in ignored `.env`; follow `docs/TWITCH.md` and package with the correct public backend origin.
+4. Twitch credentials are configured. Follow `docs/TWITCH.md` for actual account sign-in and Hosted Test playback; package with the correct public backend origin.
 5. Complete real Hosted Test and OBS gates; keep demo/native/public statuses distinct.
 6. Run typecheck/tests/build/browser tests/package/secret scan after changes.
 7. Update `docs/VALIDATION.md` with observed evidence and remaining blockers.
+
+## Latest deployment verification
+
+On 2 November 2026, the live configuration passed hosted health, OAuth redirect/client/callback matching, server-signed diagnostic extension JWT exchange, configured-origin CORS, and disabled demo-auth checks. ECS has one task and a completed rollout. This does not replace real Twitch Helper/account testing. The latest authenticated Signvrse `/v1/me` check still returned HTTP 503; no paid render was attempted. Ignored evidence: `artifacts/hosted-live-config-check.json` and `artifacts/provider-check.json`.

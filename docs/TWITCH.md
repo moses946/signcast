@@ -6,7 +6,7 @@ Origin: https://si-eb3f0fb6d3914816a6229496e4cfa0e2.ecs.eu-west-1.on.aws
 
 Hosted OAuth callback: https://si-eb3f0fb6d3914816a6229496e4cfa0e2.ecs.eu-west-1.on.aws/auth/twitch/callback
 
-The currently deployed application is explicitly synthetic demo mode. Configure the independent Twitch registrations and pass real signing gates before switching live.
+The deployed application now uses live providers and the supplied independent Twitch registrations. Hosted OAuth callback, extension signing-secret validation, and allowed-origin checks passed. These configuration checks do not establish actual Twitch Hosted Test playback. Signvrse still returns HTTP 503 and blocks interpretation preflight.
 
 ## Two separate registrations
 
